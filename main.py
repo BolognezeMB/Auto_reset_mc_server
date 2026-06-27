@@ -49,6 +49,7 @@ while True:
         os.system("cp -f ../ops.json ./")
         os.system("cp -f ../server-icon.png server-icon.png")
         os.system("cp -f ../whitelist.json ./")
+        os.system("cp -f ../default.properties server.properties")
 
         log("All needed files changed, added, edited")
 
