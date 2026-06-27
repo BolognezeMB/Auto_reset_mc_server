@@ -52,15 +52,8 @@ while True:
         os.system("cp -f ../default.properties server.properties")
 
         log("All needed files changed, added, edited")
-
         
-
-        process = subprocess.Popen( # Don't blame me for not having logs - Gemini AI wrote this lol
-            variables.command,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT, 
-            shell=isinstance(variables.command, str),
-        )
+        process = subprocess.Popen(variables.command, stdout=open("../minecraft_server.log", "a"), stderr=subprocess.STDOUT, shell=True)
         log("PROCESS STARTED" + str(process))
 
     else:
