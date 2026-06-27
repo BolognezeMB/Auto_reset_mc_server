@@ -9,7 +9,7 @@ def log(text = "TEST"):
 
 log("STARTING THE LOOP")
 
-os.mkdir("server_files")
+os.makedirs("server_files", exist_ok=True)
 os.chdir("server_files")
 log("changed dir")
 
