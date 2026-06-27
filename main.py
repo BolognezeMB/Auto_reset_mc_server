@@ -9,18 +9,18 @@ def log(text = "TEST"):
 
 log("STARTING THE LOOP")
 
-last_date_raw = open("last_date", "rt").readline().strip()
-log(last_date_raw)
-last_date = last_date = datetime.strptime(last_date_raw, "%Y-%m-%d").date()
-
 os.chdir("server_files")
 log("changed dir")
 
 process = None
 
 while True:
+    last_date_raw = open("../last_date", "rt").readline().strip()
+    log("Last server start:" + last_date_raw)
+    last_date = last_date = datetime.strptime(last_date_raw, "%Y-%m-%d").date()
     today = date.today()
-    if today - last_date > timedelta(days=7):
+
+    if today - last_date >= timedelta(days=variables.daysToReset):
         if process != None:
             process.terminate()
             process.wait()
@@ -38,14 +38,28 @@ while True:
 
     if process == None or process.poll() != None:
         log("STARTING THE SERVER")
-        process = subprocess.Popen(['xterm', '-e', variables.command])
+        process = subprocess.Popen(
+            variables.command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,  # Łączymy błędy ze zwykłymi logami
+            shell=isinstance(variables.command, str),
+        )
         log("PROCESS STARTED" + str(process))
 
+        ## Changing some files to defaults or specified by user
         f = open("eula.txt", "w")
         f.write("eula=true")
         f.close()
 
-        log("EULA changed")
+        default = open("../default.properties", "rt")
+        properties = open("server.properties", "w")
+        properties.write(default.read())
+
+        default.close()
+        properties.close()
+        log("EULA and server properties changed")
+
+        os.system("cp ../server-icon.png server-icon.png")
     else:
         log("Server is running well!")
     log("WAITING 1m")
