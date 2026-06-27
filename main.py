@@ -39,10 +39,10 @@ while True:
 
     if process == None or process.poll() != None:
         log("STARTING THE SERVER")
-        process = subprocess.Popen(
+        process = subprocess.Popen( # Don't blame me for not having logs - Gemini AI wrote this lol
             variables.command,
             stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,  # Łączymy błędy ze zwykłymi logami
+            stderr=subprocess.STDOUT, 
             shell=isinstance(variables.command, str),
         )
         log("PROCESS STARTED" + str(process))
